@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Zluri</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        window.localStorage.setItem("test", "123");
+        $("#home").show();
+        $("#user").hide();
+
+        window.addEventListener("message", function (event) {
+          console.log(event);
+          if (event.origin !== "https://client-zluri-app.herokuapp.com") return;
+          if (event.data.type === "navigate") {
+            switch (event.data.to) {
+              case "user":
+                $("#home").hide();
+                $("#user").show();
+                break;
+              case "home":
+                $("#home").show();
+                $("#user").hide();
+                break;
+              default:
+                break;
+            }
+          }
+        });
+
+        $("button").click(function () {
+          window.parent.window.postMessage(
+            {
+              type: "message",
+              message: "Push message button pressed in zluri app",
+            },
+            "https://client-zluri-app.herokuapp.com"
+          );
+        });
+
+        console.log(window.localStorage.getItem("test"));
+
+        form.onsubmit = function () {
+          window.parent.window.postMessage(
+            {
+              type: "message",
+              message: this.message.value,
+            },
+            "https://client-zluri-app.herokuapp.com"
+          );
+          return false;
+        };
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="jumbotron">
+        <h1>Zluri app</h1>
+        <h3 id="home">home page</h3>
+        <h3 id="user">user page</h3>
+        <form id="form">
+          <input type="text" placeholder="Enter message" name="message" />
+          <input type="submit" value="Click to send" />
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
