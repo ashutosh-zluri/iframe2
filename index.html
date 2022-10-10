@@ -7,6 +7,10 @@
 
     <script>
       $(document).ready(function () {
+        if (!window.localStorage) {
+          window.localStorage = {};
+        }
+
         window.localStorage.setItem("test", "123");
         $("#home").show();
         $("#user").hide();
